@@ -1,0 +1,107 @@
+.menu{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .1);
+    padding: 0 7%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+}
+.menu img{
+    width: 84px;
+}
+
+.menu .nav-section ul{
+    list-style: none; 
+}
+
+.menu .nav-section ul li{
+ position: relative;
+ float: left;
+}
+
+.menu .nav-section ul li a{
+    font-size: 20px;
+    padding: 20px;
+    color: #333;
+    display: block;
+    text-decoration: none;
+}
+
+.menu .nav-section ul li a:hover{
+    background: #333;
+    color: #fff;
+}
+
+.menu .nav-section ul li ul{
+    position: absolute;
+    text-align: center;
+    width: 150px;
+    background: #fff;
+    display: none;
+}
+
+.menu .nav-section ul li ul li{
+    width: 150px;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+}
+
+.menu .nav-section ul li ul li ul{
+    left: 150px;
+    top: 0;
+}
+
+.menu .nav-section ul li:focus-within>ul,
+.menu  .nav-section ul li:hover>ul{
+    display: initial;
+}
+
+#menu-bar{
+    display: none;
+}
+
+.menu label{
+    font-size: 20px;
+    color: #333;
+    cursor: pointer;
+    display: none;
+}
+
+@media (max-width: 991px) {
+    .menu{
+        padding: 20px;
+    }
+    .menu label{
+        display: initial;
+    }
+    .menu .nav-section{
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #fff;
+        border-top: 1px solid rgba(0, 0, 0, .1);
+        display: none;
+    }
+    .menu .nav-section ul li{
+        width: 100%;
+    }
+    .menu .nav-section ul li ul{
+        position: relative;
+        width: 100%;
+    }
+    .menu .nav-section ul li{
+        background: #eee;
+    }
+    .menu .nav-section ul li ul li ul{
+        width: 100%;
+        left: 0;
+    }
+    #menu-bar:checked ~ .nav-section{
+        display: initial;
+    }
+}
