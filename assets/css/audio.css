@@ -356,3 +356,9 @@ box-shadow: inset 5px 5px 5px rgba(0,0,0,0.2),
 }
 
 /*Dev Ideas*/
+
+@media (max-width: 991px) {
+  .main{
+    width: 50%;
+  }
+}
