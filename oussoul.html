@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/audio.css">
+    <title>Oussoul</title>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <header>
+                <h1>AUDIOS ISLAMIQUE</h1>
+
+                <p>ceci est un site pour ecouter et télécharer les audios de prêche des Imams sunnite de Côte d'Ivoire</p>
+                <nav>
+                    <ul class="left">
+                        <li><a href="#">Ajout recent</a></li>
+                        <li><a href="#">Top Top</a></li>
+                        <li><a href="#">Fortement Récommendé</a></li>
+                    </ul>
+
+                    <ul class="right">
+                        
+                        <li class="autoplay_btn">
+                            <label>
+                                <h5>Lecture Automatique</h5>
+                                <input type="checkbox">
+                                <span></span>
+                            </label>
+                        </li>
+                    </ul>
+                </nav>
+            </header>
+
+            <div class="body_content">
+                <div class="title">
+                    <span></span>
+                    <span>TITRE</span>
+                    <span>AUTEUR</span>
+                    <span>LIVRE</span>
+                    <span>DUREE</span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <div class="list">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+<script src="assets/js/jquery-3.2.1.min.js"></script>
+<script src="oussoul.js"></script>
+<script>
+    $(document).ready(function () { 
+        var list = $(".list");
+        var list_block;
+
+        for (var key in song_list){
+            list_block = $('<div class="list_block"></div>');
+            list.append(list_block);
+
+            list_block.append('<span class="play_btn"><img class="play_icon" src="assets/icon-fonts/play_80px.png"> <img class="pause_icon" src="assets/icon-fonts/pause_button_80px.png" alt=""></span>');
+            list_block.append('<span class="song_title">'+ song_list[key].title +'</span>');
+            list_block.append('<span class="song_artist">'+ song_list[key].artist +'</span>');
+            list_block.append('<span class="song_livre">'+ song_list[key].livre +'</span>');
+            list_block.append('<span class="song_duration">'+ song_list[key].duration +'</span>');
+            list_block.append('<span class="beat_animation"><ul><li></li><li></li><li></li><li></li><li></li></ul></span>');
+            list_block.append('<span class="track"><audio id="audio" controls><source src="assets/music/'+ song_list[key].track + '" type="audio/mp3"></audio></span>');
+            list_block.append('<span class="download_btn" id="down"><a target="_blank" href="assets/music/'+ song_list[key].track +'"><img src="assets/icon-fonts/download_40px.png"></span>');
+        }
+
+        //Fonctionnalité de lecture
+        $(".list_block .play_btn .play_icon").on('click', function(current){
+            $(this).parent().find(".play_icon").css("display", "none");
+            $(this).parent().find(".pause_icon").css("display", "inline-block");
+            $(".play_icon").not(this).parent().find(".pause_icon").css("display", "none");
+            $(".play_icon").not(this).parent().find(".play_icon").css("display", "inline-block");
+            
+            //remove class
+            $(this).parent().parent().addClass("isPlaying");
+            $(".play_icon").not(this).parent().parent().removeClass("isPlaying");
+            
+            //Animation du track
+            $(this).parent().parent().find(".beat_animation li").css("animation-play-state", "running").css("opacity", "1");
+            $(".play_icon").not(this).parent().parent().find(".beat_animation li").css("animation-play-state", "paused").css("opacity", ".1");
+        
+            //Pause quand on passe au suivant
+            $("audio").each(function(e){
+                if(e !== current.currentTarget){
+                    $(this)[0].pause();
+                }
+            });
+
+            //Lecture en cour
+            $(this).parent().parent().find(".track audio")[0].play();
+        });
+
+        //fonctionnalité Pause
+        $(".list_block .play_btn .pause_icon").on('click', function(){
+
+            //hide pause icon
+            $(this).parent().find(".pause_icon").css("display", "none");
+            
+            //show play icon
+            $(this).parent().find(".play_icon").css("display", "inline-block");
+
+            //animation track pause
+            $(this).parent().parent().find(".beat_animation li").css("animation-play-state", "paused");
+            
+            //pause de la lecture en cour
+            $(this).parent().parent().find(".track audio")[0].pause();     
+        });
+
+        //lecture Automatique
+        $(".autoplay_btn input").on('change', function(){
+            if($(this).is(":checked")){
+                $("audio").on("ended", function(){ 
+                    $(this).parent().parent().next().find("audio")[0].play();
+                    
+                    $(".list_block").removeClass("isPlaying");
+                    $(this).parent().parent().next().addClass("isPlaying");
+                    $(this).parent().parent().next().find(".beat_animation li").css("animation-play-state", "running").css("opacity", "1");
+                    
+                    $(this).parent().parent().next().find(".play_icon").css("display", "none");
+                    $(this).parent().parent().next().find(".pause_icon").css("display", "inline-block");
+                });
+            } else{
+                $("audio").on("ended", function(){
+                    $(".beat_animation li").css("animation-play-state", "paused").css("opacity", ".1");
+                    $(".pause_icon").css("display", "none");
+                    $(".play_icon").css("display", "inline-block");
+                });
+            }
+        }).change();
+
+    });
+</script>
+</body>
+</html>
